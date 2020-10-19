@@ -3,14 +3,13 @@ import lxml.html as lh
 import pandas
 from bs4 import BeautifulSoup
 
-# JS script that builds rankings table:
-# https://g.espncdn.com/lm-static/ffl/tools/rankingsTable.js?slotCategoryId=0&scoringPeriodId=5&seasonId=2020&rankType=ppr&count=25&rand=2
-# look for 'const getURl'
-base_url = "https://fantasy.espn.com/football/tools/fantasyRankings"
-params = ["slotCategoryId=0","scoringPeriodId=5","seasonId=2020","rankType=ppr","count=25","rand=2"]
-full_url = base_url + "?" + "&".join(params)
-
-def get_projections():
+def get_projections(week):
+    # JS script that builds rankings table:
+    # https://g.espncdn.com/lm-static/ffl/tools/rankingsTable.js?slotCategoryId=0&scoringPeriodId=5&seasonId=2020&rankType=ppr&count=25&rand=2
+    # look for 'const getURl'
+    base_url = "https://fantasy.espn.com/football/tools/fantasyRankings"
+    params = ["slotCategoryId=0","scoringPeriodId=%s" % (week),"seasonId=2020","rankType=ppr","count=25","rand=2"]
+    full_url = base_url + "?" + "&".join(params)
     r = requests.get(full_url)
 
     doc = lh.fromstring(r.content)
@@ -36,11 +35,12 @@ def get_projections():
     df = df.drop("Rank, Player",1)
     cols = df.columns
     df = df[cols[-2:].append(cols[:-2])]
-    return df.to_html()
+    print("week %s projections" % (week))
+    return df
 
-def get_rankings():
+def get_rankings(week):
     l = []
-    base_url = "https://www.fantasypros.com/nfl/reports/leaders/qb.php?year=2020&start=4&end=4"
+    base_url = "https://www.fantasypros.com/nfl/reports/leaders/qb.php?year=2020&start=%s&end=%s" % (week, week)
     r = requests.get(base_url,
                  headers={'User-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0'})
     c = r.content
@@ -58,4 +58,5 @@ def get_rankings():
     df = pandas.DataFrame(
             data=rankings,
             columns=["Ranking","Player","Score"])
-    return df.to_html()
+    print("week %s rankings" % (week))
+    return df
