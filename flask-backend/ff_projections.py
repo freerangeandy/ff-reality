@@ -4,7 +4,7 @@ import pandas
 from bs4 import BeautifulSoup
 
 def get_projections(week):
-    # JS script that builds rankings table:
+    # JS script that builds projections table:
     # https://g.espncdn.com/lm-static/ffl/tools/rankingsTable.js?slotCategoryId=0&scoringPeriodId=5&seasonId=2020&rankType=ppr&count=25&rand=2
     # look for 'const getURl'
     base_url = "https://fantasy.espn.com/football/tools/fantasyRankings"
@@ -20,7 +20,7 @@ def get_projections(week):
     th = tr_elements[0]
     header_row = [cell.text_content() for cell in th]
 
-    # get player rankings
+    # get player projections
     all_tr = tr_elements[1:]
     for tr in all_tr:
         row = [cell.text_content().replace('\xa0',' ') for cell in tr]
@@ -35,6 +35,8 @@ def get_projections(week):
     df = df.drop("Rank, Player",1)
     cols = df.columns
     df = df[cols[-2:].append(cols[:-2])]
+    df['Player'] = df['Player'].apply(normalized_player)
+    df.set_index("Player", inplace=True)
     print("week %s projections" % (week))
     return df
 
@@ -57,6 +59,14 @@ def get_rankings(week):
         rankings.append([rank, player_team, score])
     df = pandas.DataFrame(
             data=rankings,
-            columns=["Ranking","Player","Score"])
+            columns=["Projected Rank","Player","Score"])
+    df['Player'] = df['Player'].apply(normalized_player)
+    df.set_index("Player", inplace=True)
     print("week %s rankings" % (week))
     return df
+
+def normalized_player(full_str):
+    split_str = full_str.strip().split(' ', 2)
+    if split_str[1][-1] == ',':
+        split_str[1] = split_str[1][:-1]
+    return "%s %s" % (split_str[0], split_str[1])
