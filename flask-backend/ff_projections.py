@@ -31,7 +31,7 @@ def get_projections(week):
             columns=header_row)
 
     # split column and re-order
-    df[['Rank','Player']] = df["Rank, Player"].str.split('.', expand=True)
+    df[['Projected Rank','Player']] = df["Rank, Player"].str.split('.', expand=True)
     df = df.drop("Rank, Player",1)
     cols = df.columns
     df = df[cols[-2:].append(cols[:-2])]
@@ -59,7 +59,7 @@ def get_rankings(week):
         rankings.append([rank, player_team, score])
     df = pandas.DataFrame(
             data=rankings,
-            columns=["Projected Rank","Player","Score"])
+            columns=["Ranking","Player","Score"])
     df['Player'] = df['Player'].apply(normalized_player)
     df.set_index("Player", inplace=True)
     print("week %s rankings" % (week))
