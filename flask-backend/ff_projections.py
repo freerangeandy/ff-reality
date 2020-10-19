@@ -9,7 +9,7 @@ base_url = "https://fantasy.espn.com/football/tools/fantasyRankings"
 params = ["slotCategoryId=0","scoringPeriodId=5","seasonId=2020","rankType=ppr","count=25","rand=2"]
 full_url = base_url + "?" + "&".join(params)
 
-def get_rankings():
+def get_projections():
     r = requests.get(full_url)
 
     doc = lh.fromstring(r.content)
