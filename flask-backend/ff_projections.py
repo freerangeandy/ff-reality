@@ -71,3 +71,18 @@ def normalized_player(full_str):
     if split_str[1][-1] == ',':
         split_str[1] = split_str[1][:-1]
     return "%s %s" % (split_str[0], split_str[1])
+
+analysts = ['Berry', 'Karabell', 'Yates', 'Cockcroft', 'Clay', 'Dopp']
+def get_comparison(week, analyst=None):
+    rankings_df = get_rankings(week)
+    projections_df = get_projections(week)
+
+    df = projections_df.join(other=rankings_df, on='Player')
+    if analyst != None:
+        drop_analysts = analysts
+        drop_analysts.remove(analyst)
+        df.drop(columns=drop_analysts, inplace=True)
+        df['Diff (analyst - result)'] = df.apply(lambda row: int(row[analyst]) - int(row['Actual Ranking']), axis=1)
+        df['Diff (consensus - result)'] = df.apply(lambda row: int(row['Projected Ranking (consensus)']) - int(row['Actual Ranking']), axis=1)
+    comparison_columns = ['Ranking', 'Player', 'Score', analyst + ' Projected Ranking']
+    return df
