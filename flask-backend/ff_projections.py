@@ -19,6 +19,7 @@ def get_projections(week):
     # get analyst names as column headers
     th = tr_elements[0]
     header_row = [cell.text_content() for cell in th]
+    header_row[1] = "Opponent"
 
     # get player projections
     all_tr = tr_elements[1:]
@@ -31,10 +32,10 @@ def get_projections(week):
             columns=header_row)
 
     # split column and re-order
-    df[['Projected Rank','Player']] = df["Rank, Player"].str.split('.', expand=True)
+    df[['Projected Ranking (consensus)','Player']] = df["Rank, Player"].str.split('.', expand=True)
     df = df.drop("Rank, Player",1)
     cols = df.columns
-    df = df[cols[-2:].append(cols[:-2])]
+    df = df[cols[0:1].append(cols[-2:]).append(cols[1:-3])]
     df['Player'] = df['Player'].apply(normalized_player)
     df.set_index("Player", inplace=True)
     print("week %s projections" % (week))
@@ -59,7 +60,7 @@ def get_rankings(week):
         rankings.append([rank, player_team, score])
     df = pandas.DataFrame(
             data=rankings,
-            columns=["Ranking","Player","Score"])
+            columns=["Actual Ranking","Player","PPR Score"])
     df['Player'] = df['Player'].apply(normalized_player)
     df.set_index("Player", inplace=True)
     print("week %s rankings" % (week))
