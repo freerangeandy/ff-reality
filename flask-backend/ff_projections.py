@@ -30,9 +30,8 @@ def get_projections(week):
     df = pandas.DataFrame(
             data=rankings,
             columns=header_row)
-
     # split column and re-order
-    df[['Projected Ranking (consensus)','Player']] = df["Rank, Player"].str.split('.', expand=True)
+    df[['Projected Ranking (consensus)','Player']] = df["Rank, Player"].str.split('.', n=1, expand=True)
     df = df.drop("Rank, Player",1)
     cols = df.columns
     df = df[cols[0:1].append(cols[-2:]).append(cols[1:-3])]
