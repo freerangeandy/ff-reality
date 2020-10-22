@@ -35,4 +35,5 @@ def cli_function():
         print(df_c)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    cli_function()
+    # app.run(debug=True)
