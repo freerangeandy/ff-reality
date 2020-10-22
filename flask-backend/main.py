@@ -29,7 +29,10 @@ def cli_function():
         analyst_list = ', '.join(["%s: %s" % (num, analysts) for num, analysts in enumerate(analysts, start=1)])
         analyst_index = int(input("(" + analyst_list + "): "))
     df_c = get_comparison(week_no, analyst=analysts[analyst_index-1])
-    print(df_c)
+    if df_c is None:
+        print("Rankings don't exist for week %s" % week_no)
+    else:
+        print(df_c)
 
 if __name__ == '__main__':
     app.run(debug=True)

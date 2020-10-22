@@ -37,7 +37,7 @@ def get_projections(week):
     df = df[cols[0:1].append(cols[-2:]).append(cols[1:-3])]
     df['Player'] = df['Player'].apply(normalized_player)
     df.set_index("Player", inplace=True)
-    print("week %s projections" % (week))
+    print("week %s projections loading..." % (week))
     return df
 
 def get_rankings(week):
@@ -62,7 +62,7 @@ def get_rankings(week):
             columns=["Actual Ranking","Player","PPR Score"])
     df['Player'] = df['Player'].apply(normalized_player)
     df.set_index("Player", inplace=True)
-    print("week %s rankings" % (week))
+    print("week %s rankings loading..." % (week))
     return df
 
 def normalized_player(full_str):
@@ -86,6 +86,8 @@ def get_comparison(week, analyst=None):
             return 'N/A'
 
     rankings_df = get_rankings(week)
+    if rankings_df.empty == True:
+        return None
     projections_df = get_projections(week)
 
     df = projections_df.join(other=rankings_df, on='Player')
@@ -95,5 +97,5 @@ def get_comparison(week, analyst=None):
         df.drop(columns=drop_analysts, inplace=True)
         df['Diff (analyst - result)'] = df.apply(diff_analyst_result, axis=1)
         df['Diff (consensus - result)'] = df.apply(diff_consensus_result, axis=1)
-    comparison_columns = ['Ranking', 'Player', 'Score', analyst + ' Projected Ranking']
+    # comparison_columns = ['Ranking', 'Player', 'Score', analyst + ' Projected Ranking']
     return df
