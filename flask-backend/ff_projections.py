@@ -74,6 +74,18 @@ def normalized_player(full_str):
 
 analysts = ['Berry', 'Karabell', 'Yates', 'Cockcroft', 'Clay', 'Dopp']
 def get_comparison(week, analyst=None):
+    def diff_analyst_result(row):
+        try:
+            return int(row[analyst]) - int(row['Actual Ranking'])
+        except ValueError as ve:
+            return 'N/A'
+
+    def diff_consensus_result(row):
+        try:
+            return int(row['Projected Ranking (consensus)']) - int(row['Actual Ranking'])
+        except ValueError as ve:
+            return 'N/A'
+
     rankings_df = get_rankings(week)
     projections_df = get_projections(week)
 
@@ -82,7 +94,7 @@ def get_comparison(week, analyst=None):
         drop_analysts = analysts
         drop_analysts.remove(analyst)
         df.drop(columns=drop_analysts, inplace=True)
-        df['Diff (analyst - result)'] = df.apply(lambda row: int(row[analyst]) - int(row['Actual Ranking']), axis=1)
-        df['Diff (consensus - result)'] = df.apply(lambda row: int(row['Projected Ranking (consensus)']) - int(row['Actual Ranking']), axis=1)
+        df['Diff (analyst - result)'] = df.apply(diff_analyst_result, axis=1)
+        df['Diff (consensus - result)'] = df.apply(diff_consensus_result, axis=1)
     comparison_columns = ['Ranking', 'Player', 'Score', analyst + ' Projected Ranking']
     return df
