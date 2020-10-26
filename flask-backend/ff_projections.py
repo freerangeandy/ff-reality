@@ -34,7 +34,7 @@ def get_projections(week):
     df[['Projected Ranking (consensus)','Player']] = df["Rank, Player"].str.split('.', n=1, expand=True)
     df = df.drop("Rank, Player",1)
     cols = df.columns
-    df = df[cols[0:1].append(cols[-2:]).append(cols[1:-3])]
+    df = df[cols[0:1].append(cols[-2:]).append(cols[1:-2])]
     df['Player'] = df['Player'].apply(normalized_player)
     df.set_index("Player", inplace=True)
     print("week %s projections loading..." % (week))
