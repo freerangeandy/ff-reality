@@ -77,12 +77,15 @@ def diff_analyst_result(row, analyst):
     try:
         return int(row[analyst]) - int(row['Actual Ranking'])
     except ValueError as ve:
-        return 'N/A'
+        return 26 - int(row['Actual Ranking'])
 def diff_consensus_result(row):
     try:
         return int(row['Projected Ranking (consensus)']) - int(row['Actual Ranking'])
     except ValueError as ve:
-        return 'N/A'
+        return 26 - int(row['Actual Ranking'])
+def analyst_std_dev(df, cols):
+    std_devs = [df[col].std() for col in cols]
+    return [std_devs]
 
 def get_comparison(week, analyst=None):
     rankings_df = get_rankings(week)
@@ -122,4 +125,13 @@ def get_full_comparison(week):
     cols = projections_df.columns
     cols = cols[0:1].append(cols[2:]).append(cols[1:2])
     projections_df = projections_df[cols]
-    return (projections_df, deviation_df)
+    # std dev table
+    std_dev_columns = analysts
+    std_dev_columns.append('Consensus')
+    std_dev_df = pandas.DataFrame(
+        index=['Standard Deviation'],
+        data=analyst_std_dev(deviation_df, std_dev_columns),
+        columns=std_dev_columns
+    )
+
+    return (projections_df, deviation_df, std_dev_df)
