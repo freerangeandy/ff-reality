@@ -34,7 +34,7 @@ def get_projections(week):
     df[['Projected Ranking (consensus)','Player']] = df["Rank, Player"].str.split('.', n=1, expand=True)
     df = df.drop("Rank, Player",1)
     cols = df.columns
-    df = df[cols[0:1].append(cols[-2:]).append(cols[1:-3])]
+    df = df[cols[0:1].append(cols[-2:]).append(cols[1:-2])]
     df['Player'] = df['Player'].apply(normalized_player)
     df.set_index("Player", inplace=True)
     print("week %s projections loading..." % (week))
@@ -72,19 +72,22 @@ def normalized_player(full_str):
     return "%s %s" % (split_str[0], split_str[1])
 
 analysts = ['Berry', 'Karabell', 'Yates', 'Cockcroft', 'Clay', 'Dopp']
+# dataframe row methods
+def diff_analyst_result(row, analyst):
+    try:
+        return int(row[analyst]) - int(row['Actual Ranking'])
+    except ValueError as ve:
+        return 26 - int(row['Actual Ranking'])
+def diff_consensus_result(row):
+    try:
+        return int(row['Projected Ranking (consensus)']) - int(row['Actual Ranking'])
+    except ValueError as ve:
+        return 26 - int(row['Actual Ranking'])
+def analyst_std_dev(df, cols):
+    std_devs = [df[col].std() for col in cols]
+    return [std_devs]
+
 def get_comparison(week, analyst=None):
-    def diff_analyst_result(row):
-        try:
-            return int(row[analyst]) - int(row['Actual Ranking'])
-        except ValueError as ve:
-            return 'N/A'
-
-    def diff_consensus_result(row):
-        try:
-            return int(row['Projected Ranking (consensus)']) - int(row['Actual Ranking'])
-        except ValueError as ve:
-            return 'N/A'
-
     rankings_df = get_rankings(week)
     if rankings_df.empty == True:
         return None
@@ -95,7 +98,40 @@ def get_comparison(week, analyst=None):
         drop_analysts = analysts
         drop_analysts.remove(analyst)
         df.drop(columns=drop_analysts, inplace=True)
-        df['Diff (analyst - result)'] = df.apply(diff_analyst_result, axis=1)
+        df['Diff (analyst - result)'] = df.apply(diff_analyst_result, axis=1, analyst=analyst)
         df['Diff (consensus - result)'] = df.apply(diff_consensus_result, axis=1)
-    # comparison_columns = ['Ranking', 'Player', 'Score', analyst + ' Projected Ranking']
     return df
+
+def get_full_comparison(week):
+    rankings_df = get_rankings(week)
+    if rankings_df.empty == True:
+        return None
+    projections_df = get_projections(week)
+    deviation_df = projections_df.join(other=rankings_df, on='Player')
+    # replace analyst (and consensus) projections with deviations from actual rankings
+    for analyst in analysts:
+        deviation_df[analyst] = deviation_df.apply(diff_analyst_result, axis=1, analyst=analyst)
+    deviation_df['Consensus'] = deviation_df.apply(diff_consensus_result, axis=1)
+    # shorten/drop column names
+    deviation_df.drop(columns=['PPR Score','Projected Ranking (consensus)', 'AVG'], inplace=True)
+    deviation_df = deviation_df.rename(columns={'Actual Ranking':'Actual'})
+    # shift Actual column
+    cols = deviation_df.columns
+    cols = cols[0:1].append(cols[-2:-1]).append(cols[1:-2]).append(cols[-1:])
+    deviation_df = deviation_df[cols]
+    # shorten column names for projections table
+    projections_df = projections_df.rename(columns={'Projected Ranking (consensus)':'Consensus'})
+    # shift Consensus column
+    cols = projections_df.columns
+    cols = cols[0:1].append(cols[2:]).append(cols[1:2])
+    projections_df = projections_df[cols]
+    # std dev table
+    std_dev_columns = analysts
+    std_dev_columns.append('Consensus')
+    std_dev_df = pandas.DataFrame(
+        index=['Standard Deviation'],
+        data=analyst_std_dev(deviation_df, std_dev_columns),
+        columns=std_dev_columns
+    )
+
+    return (projections_df, deviation_df, std_dev_df)
