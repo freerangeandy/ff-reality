@@ -24,7 +24,7 @@ def cli_one_analyst():
     print("Which position?")
     position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
     position_index = int(input("(" + position_list + "): "))
-    while position_index not in range(1, 4):
+    while position_index not in range(1, 5):
         print("%s is not valid (integer between 1 and 4)" % position_index)
         position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
         position_index = int(input("(" + position_list + "): "))
@@ -49,7 +49,7 @@ def cli_full_comparison():
     print("Which position?")
     position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
     position_index = int(input("(" + position_list + "): "))
-    while position_index not in range(1, 4):
+    while position_index not in range(1, 5):
         print("%s is not valid (integer between 1 and 4)" % position_index)
         position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
         position_index = int(input("(" + position_list + "): "))
