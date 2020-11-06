@@ -3,13 +3,7 @@ import lxml.html as lh
 import pandas
 from bs4 import BeautifulSoup
 
-slotIDs = {
-    "qb": "0",
-    "rb": "2",
-    "wr": "4",
-    "te": "6",
-}
-
+slotIDs = { "qb": "0", "rb": "2", "wr": "4", "te": "6"}
 def get_projections(week, position):
     # JS script that builds projections table:
     # https://g.espncdn.com/lm-static/ffl/tools/rankingsTable.js?slotCategoryId=0&scoringPeriodId=5&seasonId=2020&rankType=ppr&count=25&rand=2
@@ -82,6 +76,7 @@ def normalized_player(full_str):
     return "%s %s" % (split_str[0], split_str[1])
 
 analysts = ['Berry', 'Karabell', 'Yates', 'Cockcroft', 'Clay', 'Dopp']
+positions = ['qb', 'rb', 'wr', 'te']
 # dataframe row methods
 def diff_analyst_result(row, analyst):
     try:
@@ -97,11 +92,11 @@ def analyst_std_dev(df, cols):
     std_devs = [df[col].std() for col in cols]
     return [std_devs]
 
-def get_comparison(week, analyst=None):
-    rankings_df = get_rankings(week, "qb")
+def get_comparison(week, position, analyst=None):
+    rankings_df = get_rankings(week, position)
     if rankings_df.empty == True:
         return None
-    projections_df = get_projections(week, "qb")
+    projections_df = get_projections(week, position)
 
     df = projections_df.join(other=rankings_df, on='Player')
     if analyst != None:
@@ -112,11 +107,11 @@ def get_comparison(week, analyst=None):
         df['Diff (consensus - result)'] = df.apply(diff_consensus_result, axis=1)
     return df
 
-def get_full_comparison(week):
-    rankings_df = get_rankings(week, "qb")
+def get_full_comparison(week, position):
+    rankings_df = get_rankings(week, position)
     if rankings_df.empty == True:
         return None
-    projections_df = get_projections(week, "qb")
+    projections_df = get_projections(week, position)
     deviation_df = projections_df.join(other=rankings_df, on='Player')
     # replace analyst (and consensus) projections with deviations from actual rankings
     for analyst in analysts:

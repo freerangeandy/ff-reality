@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from ff_projections import analysts, get_comparison, get_full_comparison
+from ff_projections import positions, analysts, get_comparison, get_full_comparison
 
 app = Flask(__name__)
 
@@ -21,6 +21,13 @@ def cli_one_analyst():
     while week_no not in range(1, 18):
         print("Week %s is not valid (integer between 1 and 17)" % week_no)
         week_no = int(input("Which week? "))
+    print("Which position?")
+    position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
+    position_index = int(input("(" + position_list + "): "))
+    while position_index not in range(1, 4):
+        print("%s is not valid (integer between 1 and 4)" % position_index)
+        position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
+        position_index = int(input("(" + position_list + "): "))
     print("Which analyst?")
     analyst_list = ', '.join(["%s: %s" % (num, analysts) for num, analysts in enumerate(analysts, start=1)])
     analyst_index = int(input("(" + analyst_list + "): "))
@@ -28,7 +35,7 @@ def cli_one_analyst():
         print("%s is not valid (integer between 1 and 6)" % analyst_index)
         analyst_list = ', '.join(["%s: %s" % (num, analysts) for num, analysts in enumerate(analysts, start=1)])
         analyst_index = int(input("(" + analyst_list + "): "))
-    df_c = get_comparison(week_no, analyst=analysts[analyst_index-1])
+    df_c = get_comparison(week_no, positions[position_index-1], analyst=analysts[analyst_index-1])
     if df_c is None:
         print("Rankings don't exist for week %s" % week_no)
     else:
@@ -39,7 +46,14 @@ def cli_full_comparison():
     while week_no not in range(1, 18):
         print("Week %s is not valid (integer between 1 and 17)" % week_no)
         week_no = int(input("Which week? "))
-    df_tuple = get_full_comparison(week_no)
+    print("Which position?")
+    position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
+    position_index = int(input("(" + position_list + "): "))
+    while position_index not in range(1, 4):
+        print("%s is not valid (integer between 1 and 4)" % position_index)
+        position_list = ', '.join(["%s: %s" % (num, positions.upper()) for num, positions in enumerate(positions, start=1)])
+        position_index = int(input("(" + position_list + "): "))
+    df_tuple = get_full_comparison(week_no, positions[position_index-1])
     if df_tuple is None:
         print("Rankings don't exist for week %s" % week_no)
     else:
