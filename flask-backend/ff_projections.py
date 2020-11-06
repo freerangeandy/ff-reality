@@ -3,12 +3,22 @@ import lxml.html as lh
 import pandas
 from bs4 import BeautifulSoup
 
-def get_projections(week):
+slotIDs = {
+    "qb": "0",
+    "rb": "2",
+    "wr": "4",
+    "te": "6",
+}
+
+def get_projections(week, position):
     # JS script that builds projections table:
     # https://g.espncdn.com/lm-static/ffl/tools/rankingsTable.js?slotCategoryId=0&scoringPeriodId=5&seasonId=2020&rankType=ppr&count=25&rand=2
     # look for 'const getURl'
     base_url = "https://fantasy.espn.com/football/tools/fantasyRankings"
-    params = ["slotCategoryId=0","scoringPeriodId=%s" % (week),"seasonId=2020","rankType=ppr","count=25","rand=2"]
+    slotID = slotIDs[position]
+    params = ["slotCategoryId=%s" % (slotID),"scoringPeriodId=%s" % (week),"seasonId=2020","rankType=ppr"]
+    if position == "qb":
+        params.append("count=25")
     full_url = base_url + "?" + "&".join(params)
     r = requests.get(full_url)
 
@@ -40,9 +50,9 @@ def get_projections(week):
     print("week %s projections loading..." % (week))
     return df
 
-def get_rankings(week):
+def get_rankings(week, position):
     l = []
-    base_url = "https://www.fantasypros.com/nfl/reports/leaders/qb.php?year=2020&start=%s&end=%s" % (week, week)
+    base_url = "https://www.fantasypros.com/nfl/reports/leaders/%s.php?year=2020&start=%s&end=%s" % (position, week, week)
     r = requests.get(base_url,
                  headers={'User-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0'})
     c = r.content
@@ -88,10 +98,10 @@ def analyst_std_dev(df, cols):
     return [std_devs]
 
 def get_comparison(week, analyst=None):
-    rankings_df = get_rankings(week)
+    rankings_df = get_rankings(week, "qb")
     if rankings_df.empty == True:
         return None
-    projections_df = get_projections(week)
+    projections_df = get_projections(week, "qb")
 
     df = projections_df.join(other=rankings_df, on='Player')
     if analyst != None:
@@ -103,10 +113,10 @@ def get_comparison(week, analyst=None):
     return df
 
 def get_full_comparison(week):
-    rankings_df = get_rankings(week)
+    rankings_df = get_rankings(week, "qb")
     if rankings_df.empty == True:
         return None
-    projections_df = get_projections(week)
+    projections_df = get_projections(week, "qb")
     deviation_df = projections_df.join(other=rankings_df, on='Player')
     # replace analyst (and consensus) projections with deviations from actual rankings
     for analyst in analysts:
