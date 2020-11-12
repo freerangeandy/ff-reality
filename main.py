@@ -6,14 +6,14 @@ app = Flask(__name__)
 @app.route('/')
 def my_index():
     return render_template("index.html",
-        token="Hello flask + react"
+        message="Hello flask"
     )
 
-@app.route('/test')
-def testing():
+@app.route('/success')
+def success():
     df_html = get_projections()
     return render_template("index.html",
-        token= df_html
+        table= None
     )
 
 if __name__ == '__main__':
