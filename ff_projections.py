@@ -77,7 +77,7 @@ def normalized_player(full_str):
 
 analysts = ['Berry', 'Karabell', 'Yates', 'Cockcroft', 'Clay', 'Dopp']
 positions = ['qb', 'rb', 'wr', 'te']
-max_rankings = {'qb':32,'rb':64,'wr':120,'te':32}
+max_rankings = {'qb':32,'rb':64,'wr':120,'te':32} # arbitrarily chosen, actually highly variable
 # dataframe row methods
 def diff_analyst_result(row, position, analyst):
     projected = None
