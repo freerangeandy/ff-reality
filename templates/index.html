@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Fantasy Football Reality 2020</title>
+  <head>
+      <link rel="stylesheet" href="../static/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Fantasy Football Reality 2020</h1>
+      <h4></h4>
+      <form action="{{url_for('success')}}" method="POST" enctype="multipart/form-data">
+        <button type="submit">Submit</button>
+      </form>
+      {% if error %}
+        <div class="message">{{error|safe}}</div>
+      {% elif table is defined %}
+        {{table|safe}}
+      {% endif %}
+    </div>
+  </body>
+</html>
