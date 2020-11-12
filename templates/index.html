@@ -23,6 +23,7 @@
         </select>
         <label for="analysts-select">Select analyst:</label>
         <select class="analysts" name="analysts-select">
+          <option value="99">All</option>
           {% for (num, analyst) in analysts %}
             <option value="{{num}}">{{analyst}}</option>
           {% endfor %}
