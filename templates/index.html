@@ -30,10 +30,17 @@
         </select>
         <button type="submit">Submit</button>
       </form>
-      {% if error %}
-        <div class="message">{{error|safe}}</div>
-      {% elif table is defined %}
-        {{table|safe}}
+      {% if message %}
+        <div class="message">{{message|safe}}</div>
+      {% endif %}
+      {% if comparison_html is defined %}
+        {{comparison_html|safe}}
+      {% elif projections_html is defined %}
+        {{projections_html|safe}}
+        <br />
+        {{differences_html|safe}}
+        <br />
+        {{std_dev_html|safe}}
       {% endif %}
     </div>
   </body>

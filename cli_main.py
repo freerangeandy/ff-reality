@@ -55,4 +55,5 @@ def present_comparison_tables(dfs):
     print(std_dev)
 
 if __name__ == '__main__':
+    # cli_one_analyst()
     cli_full_comparison()
