@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 from ff_projections import positions, analysts, get_comparison, get_full_comparison
-from cli_main import present_comparison_tables
 
 position_list = [(num, position.upper()) for num, position in enumerate(positions)]
 analyst_list = [(num, analyst) for num, analyst in enumerate(analysts)]
@@ -21,10 +20,8 @@ def success():
         week_no = int(request.form['weeks-select'])
         position_idx = int(request.form['positions-select'])
         analyst_idx = int(request.form['analysts-select'])
-
         if analyst_idx < 99: # 'All' not selected
             comparison_df = get_comparison(week_no, positions[position_idx], analyst=analysts[analyst_idx])
-            # df_c = get_comparison(week_no, positions[position_index-1], analyst=analysts[analyst_index-1])
             return render_template("index.html",
                 weeks=range(1,8),
                 positions=position_list,
@@ -35,7 +32,6 @@ def success():
         else: # 'All' selected
             print(f"Week: {week_no}, Position: {position_list[position_idx][1]}")
             df_tuple = get_full_comparison(week_no, positions[position_idx])
-            present_comparison_tables(df_tuple)
             return render_template("index.html",
                 weeks=range(1,8),
                 positions=position_list,
