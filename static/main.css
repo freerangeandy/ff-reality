@@ -10,7 +10,7 @@ html, body {
   height: 100%;
   background-color: #006666;
   color: #e6ffff;
-  overflow: hidden;
+  overflow: auto;
   text-align: center;
 }
 
