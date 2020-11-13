@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Fantasy Football Reality 2020</title>
+  <head>
+      <link rel="stylesheet" href="../static/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Fantasy Football Reality 2020</h1>
+      <h4></h4>
+      <form action="{{url_for('success')}}" method="POST">
+        <label for="weeks-select">Select week:</label>
+        <select class="weeks" name="weeks-select">
+          {% for week_no in weeks %}
+            <option value="{{week_no}}">{{week_no}}</option>
+          {% endfor %}
+        </select>
+        <label for="positions-select">Select position:</label>
+        <select class="positions" name="positions-select">
+          {% for (num, position) in positions %}
+            <option value="{{num}}">{{position}}</option>
+          {% endfor %}
+        </select>
+        <label for="analysts-select">Select analyst:</label>
+        <select class="analysts" name="analysts-select">
+          <option value="99">All</option>
+          {% for (num, analyst) in analysts %}
+            <option value="{{num}}">{{analyst}}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">Submit</button>
+      </form>
+      {% if message %}
+        <div class="message">{{message|safe}}</div>
+      {% endif %}
+      {% if comparison_html is defined %}
+        {{comparison_html|safe}}
+      {% elif projections_html is defined %}
+        {{projections_html|safe}}
+        <br />
+        {{differences_html|safe}}
+        <br />
+        {{std_dev_html|safe}}
+      {% endif %}
+    </div>
+  </body>
+</html>

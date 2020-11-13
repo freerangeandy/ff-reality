@@ -1,20 +1,4 @@
-from flask import Flask, render_template
 from ff_projections import positions, analysts, get_comparison, get_full_comparison
-
-app = Flask(__name__)
-
-@app.route('/')
-def my_index():
-    return render_template("index.html",
-        token="Hello flask + react"
-    )
-
-@app.route('/test')
-def testing():
-    df_html = get_projections()
-    return render_template("index.html",
-        token= df_html
-    )
 
 def cli_one_analyst():
     week_no = int(input("Which week? "))
@@ -71,5 +55,5 @@ def present_comparison_tables(dfs):
     print(std_dev)
 
 if __name__ == '__main__':
+    # cli_one_analyst()
     cli_full_comparison()
-    # app.run(debug=True)
