@@ -154,7 +154,7 @@ def get_full_comparison(week, position):
     cols = cols[0:1].append(cols[2:]).append(cols[1:2])
     projections_df = projections_df[cols]
     # std dev table
-    std_dev_columns = analysts
+    std_dev_columns = list(analysts)
     std_dev_columns.append('Consensus')
     std_dev_df = pandas.DataFrame(
         index=['Standard Deviation'],
