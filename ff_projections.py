@@ -112,7 +112,7 @@ def diff_consensus_result(row, position):
         actual = max_ranking
     return projected - actual
 def analyst_std_dev(df, cols):
-    std_devs = [df[col].std() for col in cols]
+    std_devs = ["{:.2f}".format(df[col].std()) for col in cols]
     return [std_devs]
 
 def get_comparison(week, position, analyst=None):
