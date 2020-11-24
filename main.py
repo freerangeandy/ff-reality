@@ -23,6 +23,13 @@ def success():
         analyst_idx = int(request.form['analysts-select'])
         if analyst_idx < 99: # 'All' not selected
             comparison_df = get_comparison(week_no, positions[position_idx], analyst=analysts[analyst_idx])
+            if comparison_df is None:
+                return render_template("index.html",
+                    weeks=weeks_list,
+                    positions=position_list,
+                    analysts=analyst_list,
+                    message=f"Results not found for Week: {week_no}"
+                )
             return render_template("index.html",
                 weeks=weeks_list,
                 positions=position_list,
@@ -33,6 +40,13 @@ def success():
         else: # 'All' selected
             print(f"Week: {week_no}, Position: {position_list[position_idx][1]}")
             df_tuple = get_full_comparison(week_no, positions[position_idx])
+            if df_tuple is None:
+                return render_template("index.html",
+                    weeks=weeks_list,
+                    positions=position_list,
+                    analysts=analyst_list,
+                    message=f"Results not found for Week: {week_no}"
+                )
             return render_template("index.html",
                 weeks=weeks_list,
                 positions=position_list,
