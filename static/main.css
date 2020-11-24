@@ -50,6 +50,10 @@ html, body {
   margin-bottom: 10px;
 }
 
+.container hr {
+  margin: 0 80px;
+}
+
 .message {
   font-size: 20px;
   font-weight: 600;
