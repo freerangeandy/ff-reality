@@ -3,13 +3,14 @@ from ff_projections import positions, analysts, get_comparison, get_full_compari
 
 position_list = [(num, position.upper()) for num, position in enumerate(positions)]
 analyst_list = [(num, analyst) for num, analyst in enumerate(analysts)]
+weeks_list = range(1, 17)
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return render_template("index.html",
-        weeks=range(1,8),
+        weeks=weeks_list,
         positions=position_list,
         analysts=analyst_list
     )
@@ -23,7 +24,7 @@ def success():
         if analyst_idx < 99: # 'All' not selected
             comparison_df = get_comparison(week_no, positions[position_idx], analyst=analysts[analyst_idx])
             return render_template("index.html",
-                weeks=range(1,8),
+                weeks=weeks_list,
                 positions=position_list,
                 analysts=analyst_list,
                 comparison_html=comparison_df.to_html(),
@@ -33,7 +34,7 @@ def success():
             print(f"Week: {week_no}, Position: {position_list[position_idx][1]}")
             df_tuple = get_full_comparison(week_no, positions[position_idx])
             return render_template("index.html",
-                weeks=range(1,8),
+                weeks=weeks_list,
                 positions=position_list,
                 analysts=analyst_list,
                 projections_html=df_tuple[0].to_html(),
