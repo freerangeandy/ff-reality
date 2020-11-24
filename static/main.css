@@ -53,8 +53,17 @@ html, body {
 table {
   margin: auto;
   border-collapse: collapse;
+  border: 3px solid #e28d0d;
 }
 
 table th {
+  color: #e6ffff;
   padding: 4px 8px;
+  background-color: rgb(255,255,255,0.1);
+  border: 2px solid #e28d0d;
+}
+
+table td {
+  border: 2px solid rgb(226,141,13,0.7);
+  background-color: rgb(255,255,255,0.05);
 }
