@@ -123,9 +123,10 @@ def get_comparison(week, position, analyst=None):
 
     df = projections_df.join(other=rankings_df, on='Player')
     if analyst != None:
-        drop_analysts = list(analysts)
-        drop_analysts.remove(analyst)
-        df.drop(columns=drop_analysts, inplace=True)
+        drop_columns = list(analysts)
+        drop_columns.remove(analyst)
+        drop_columns.append("AVG")
+        df.drop(columns=drop_columns, inplace=True)
         df['Diff (analyst - result)'] = df.apply(diff_analyst_result, axis=1, position=position, analyst=analyst)
         df['Diff (consensus - result)'] = df.apply(diff_consensus_result, axis=1, position=position)
     return df
