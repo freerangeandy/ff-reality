@@ -34,12 +34,16 @@
         <div class="message">{{message|safe}}</div>
       {% endif %}
       {% if comparison_html is defined %}
+        <h2>Expert (and Consensus) Projected Rankings vs. Actual Results</h2>
         {{comparison_html|safe}}
       {% elif projections_html is defined %}
+        <h2>Experts' Projected Rankings</h2>
         {{projections_html|safe}}
         <br />
+        <h2>Actual Results & Difference from Experts' Projections</h2>
         {{differences_html|safe}}
         <br />
+        <h2>Standard Deviations of Differences (Expert Projections - Results)</h2>
         {{std_dev_html|safe}}
       {% endif %}
     </div>
