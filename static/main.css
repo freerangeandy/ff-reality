@@ -36,10 +36,28 @@ html, body {
 }
 
 .container button {
-  min-width: 70px;
-  height: 30px;
-  background-color: steelblue;
   margin: 4px;
+  min-width: 70px;
+  height: 25px;
+  font-weight: 600;
+  color: #333333;
+  background-color: #ffd473;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid rgba(30,30,30,0.4);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.container button:hover {
+  color: #333333;
+  background-color: #ffbc42;
+}
+
+.container button:active {
+  color: #292929;
+  background-color: #e28d0d;
 }
 
 .container p {
