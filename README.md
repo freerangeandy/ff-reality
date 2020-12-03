@@ -1,4 +1,4 @@
-#Fantasy Football Reality 2020
+# Fantasy Football Reality 2020
 Compare weekly projected fantasy rankings (by ESPN analysts) of NFL skill-position players with actual performance.
 
 ## Setup Instructions
@@ -23,16 +23,14 @@ Then open [http://localhost:5000](http://localhost:5000) to view it in the brows
 ## Usage
 The user interface has selection options for week (of the NFL season), position (QB, RB, WR, TE), and analyst ('All', or one of any individual ESPN fantasy analyst). After making selections through the dropdown menus, press the 'Show Tables' button.
 
-Note: Weeks 1-16 appear in the dropdown menu, but only weeks that have completed will successfully return comparison tables.
+*Note*: Weeks 1-16 appear in the dropdown menu, but only weeks that have completed will successfully return comparison tables.
 
-For a spotlight on how well a particular analyst projected the player rankings:
+**For a spotlight on how well a particular analyst projected the player rankings:**
 Select an individual analyst's name, and you will see a single table that displays the rankings of players at the position selected, as projected by the analyst (along with the consensus of analysts) and as they actually performed during that week's games. Other columns show the fantasy points scored (+1 PPR rules) by each player and how different each projected ranking was from the result.
 
-For a side-by-side comparison of all analysts' projection accuracy:
-
+**For a side-by-side comparison of all analysts' projection accuracy:**
 Select 'All', and three tables will appear: Expert Projected Rankings, Actual Results & Difference from Experts' Projections, and Standard Deviation of Differences. The sample standard deviation for each analyst is calculated from the difference between the projected and resulting ranking for each player.
 
 ## Credits
 Data for projected rankings by ESPN analysts is provided by ESPN: https://fantasy.espn.com/football/tools/fantasyRankings
-
 Data for actual player rankings is provided by FantasyPros: https://www.fantasypros.com/nfl/reports/leaders
