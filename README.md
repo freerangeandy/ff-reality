@@ -2,7 +2,7 @@
 See comparison tables of projected fantasy football rankings (by ESPN analysts) of skill-position players with actual fantasy results for any week in the 2020 NFL regular season.
 
 ## Setup Instructions
-This project is made using Python 3.7.9, so if this version (or at least 3.7+) isn't installed on your file system, visit [python.org](https://www.python.org/downloads/release/python-379/) and follow the instructions to download and install python (as well as its package manager, pip).
+This project is built and run with Python 3.7.9, so if this version (or at least 3.7+) isn't installed on your file system, visit [python.org](https://www.python.org/downloads/release/python-379/) and follow the instructions to download and install python (as well as its package manager, pip).
 
 After you clone this project to your desktop, you will need to install the requisite libraries (including flask, pandas, et al.). Open a terminal window, navigate to the root project directory, and execute the following command:
 
