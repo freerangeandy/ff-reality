@@ -26,6 +26,21 @@ body {
   margin-top: 20px;
 }
 
+.instructions {
+  display: flex;
+  flex-direction: column;
+}
+
+.instructions h5 {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: left;
+  font-weight: 500;
+  color: #FFD473;
+  margin: auto;
+  padding-left: 6px;
+}
+
 .container form {
   margin-top: 20px;
 }
