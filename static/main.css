@@ -1,10 +1,14 @@
-html, body {
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   height: 100%;
   margin: 0;
   font-family: sans-serif;
 }
 
 .container {
+  flex-grow: 1;
   margin: 0 auto;
   padding: 40px 0;
   width: 100%;
@@ -95,4 +99,39 @@ table th {
 table td {
   border: 2px solid rgb(226,141,13,0.7);
   background-color: rgb(255,255,255,0.05);
+}
+
+.page-footer {
+  flex-grow: 0;
+  margin: 0;
+  width: 100%;
+  height: 1.4rem;
+  background-color: rgb(255, 212, 115, 1);
+  border-top: 1px solid rgba(55,55,55, 0.8);
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.page-footer p {
+  padding: 0.2rem 0.8rem;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(0,0,0, 0.3);
+}
+
+.git-link {
+  color: #38384A;
+  text-decoration: none;
+}
+
+.git-link:hover {
+  color: #38384A;
+  transition: color .2s all;
+}
+
+.git-link:focus {
+  color: #38384A;
 }
